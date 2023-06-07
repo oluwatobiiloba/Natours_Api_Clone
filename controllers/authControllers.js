@@ -1,8 +1,9 @@
-const { promisify } = require('util');
+
 const catchAsync = require('./../utils/catchAsync');
 const User = require('./../models/userModels')
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
+const bcrypt = require('bcryptjs')
 const AppError = require('../utils/appError');
 const sendEmail = require('../utils/email');
 const crypto = require('crypto');
@@ -134,7 +135,7 @@ exports.forgotPassword = async (req, res, next) => {
     await user.save({ validateBeforeSave: false });
     //send to users email
     const resetURL = `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`;
-    const message = `Forgot your password? Submit a patch request with your new password and passswordconfirm to:${resetURL}.\n If you didn't forget your password, please ignore the emeil.`
+    const message = `Forgot your password? Submit a patch request with your new password and passswordconfirm to:${resetURL}.\n If you didn't forget your password, please ignore the email.`
 
     try {
         await sendEmail({
@@ -211,7 +212,7 @@ exports.updateMyPassword = catchAsync(async (req, res, next) => {
     next();
 })
 
-//Renered pages protection
+//Rendered pages protection
 exports.isLoggedIn = async (req, res, next) => {
     //1) Get Jwt Token and check it it exists
    

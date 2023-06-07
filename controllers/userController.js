@@ -20,7 +20,7 @@ const multerStorage = multer.memoryStorage()
 
 const multerFilter = (req,file,callback) =>{
     const type = file.mimetype.split('/')[0];
-    if(type === image ){
+    if (type === "image") {
         callback(null,true)
     }else{
         callback(new AppError('Not an image! Please upload only images',400),false)
